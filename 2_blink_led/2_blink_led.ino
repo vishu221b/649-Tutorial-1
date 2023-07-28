@@ -21,19 +21,15 @@ void loop() {
     }else if(i > 20){
       _delay=100;
     }
-    char *_th_notion = "th";
-    char *_1_notion = "st";
-    char *_2_notion = "nd";
-    char *_3_notion = "rd";
     char *_final;
     if(i == 0){
-      _final=_1_notion;
+      _final="st";
     }else if(i==1){
-      _final=_2_notion;
+      _final="nd";
     }else if(i==2){
-      _final=_3_notion;
+      _final="rd";
     }else{
-      _final=_th_notion;
+      _final="th";
     }
     Serial.printf("Executing %i%s blink...\n", i+1, _final);
     blinkLed(_delay);
