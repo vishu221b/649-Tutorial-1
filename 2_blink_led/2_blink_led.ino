@@ -1,4 +1,4 @@
-#define ledpin 11 // default led pin for teensy 2.0
+#define ledpin 10 // default led pin for teensy 2.0
 
 void blinkLed(long _delay);
 
