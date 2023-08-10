@@ -3,7 +3,8 @@ import time
 import string
 import json
 
-ser = serial.Serial("/dev/rfcomm0", 9600)
+ser_port="/dev/rfcomm1"
+ser = serial.Serial(ser_port, 9600)
 ser.write(str.encode("Starting the rpi communication...\r\n"))
 
 try:
