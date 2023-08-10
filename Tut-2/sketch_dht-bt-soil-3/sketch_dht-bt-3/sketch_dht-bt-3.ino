@@ -1,3 +1,4 @@
+#include <string.h>
 #include "DHT.h"
 
 #define DHTPIN 21 // Teensy 2.0 uses digital pin 21 for DHT sensor module
@@ -51,22 +52,45 @@ void loop() {
   dtostrf(dht.computeHeatIndex(tempInFarenheit, humidity), 4, 2, heatIndexFarenheit);
   printDivider();
   char outputBuffer[200];
+  char rpiResponse[200];
   sprintf(outputBuffer, "\nHeat index: %s°C / %s°F \nHumidity: %s \nTemp: %s°C / %s°F\n", heatIndexCelsius, heatIndexFarenheit, s_humidity, s_tempInC, s_tempInF);
   Serial.println(outputBuffer);
-  Serial1.write(outputBuffer);
+//  Serial1.write(outputBuffer);
   int soilReading=analogRead(soilPin);
   char soilRead[120];
   sprintf(soilRead, "Soil Reading: %d\n", soilReading);
   Serial.println(soilRead);
-  Serial1.write(soilRead);
+
+  /**
+   * Prepare and send the readings repsone to Rpi.
+   * Rpi should be able to serialize this data into usable format.
+   */
+  sprintf(rpiResponse, "heat_index: %s°C / %s°F | humidity: %s | temperature: %s°C / %s°F | soil_moisture: %d \n", heatIndexCelsius, heatIndexFarenheit, s_humidity, s_tempInC, s_tempInF, soilReading);
+  Serial1.write(rpiResponse);
+  
   printDivider();
+  
   delay(1000);
   digitalWrite(LedPin, LOW);
   if(Serial1.available()){
-    Serial.write(Serial1.read());
+    /**
+     * So that instead of single character being read in each loop() iteration, 
+     * read the entire string write it to the Serail until entire string has been written
+     * within the current loop()'s iteration
+     */
+    String buff1=Serial1.readString();
+    for(int i=0; i<buff1.length(); i++){
+      Serial.write(buff1[i]);
+    }
+    
   }
   if(Serial.available()){
-    Serial1.write(Serial.read());
+    String buff2=Serial.readString();
+    int l=0;
+    while(l<buff2.length()){
+      Serial1.write(buff2[l]);
+      l++;
+    }
   }
 }
 
