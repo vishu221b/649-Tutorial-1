@@ -1,20 +1,21 @@
 import paho.mqtt.client as mqtt
 
+# topic="IFN649"
 topic="/Week5"
 
 def on_connect(client, userdata, flags, rc):
-    print("Established connection to MQTT!!")
-    print("Conn Res: " + str(rc))
+    print("Connected to MQTT")
+    print("Connection result: " + str(rc))
 
     client.subscribe(topic)
 
 def on_message(client, userdata, msg):
-    print(msg.topic, " ", msg.payload)
+    print(msg.topic + " " + str(msg.payload))
 
-client=mqtt.Client()
+client = mqtt.Client()
 client.on_connect=on_connect
 client.on_message=on_message
 
-client.Connect("13.211.158.174")
+client.connect("13.211.158.174", 1883, 60)
 
 client.loop_forever()
