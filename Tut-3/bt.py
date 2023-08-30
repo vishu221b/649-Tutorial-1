@@ -3,7 +3,7 @@ import time
 import string
 import json
 
-ser_port="/dev/rfcomm0"
+ser_port="/dev/rfcomm1"
 ser = serial.Serial(ser_port, 9600)
 ser.write(str.encode("Starting the rpi communication...\r\n"))
 
@@ -15,7 +15,7 @@ try:
         if ser.in_waiting > 0:
             rawserial=ser.readline()
             cookedserial=rawserial.decode("utf-8").strip("\r\n")
-            # print(c)
+            print(cookedserial)
             print("-"*line_len)
             try:
                 # Because sensor readings will come through in the format <reading-type>: <reading-value>
