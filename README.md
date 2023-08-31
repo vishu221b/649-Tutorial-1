@@ -1,5 +1,5 @@
 # 649-Tutorial-Content
-Tutorial content for IFN649
+Tutorial content for IFN649.
 
 ## Components
 - Arduino/Teensy Hello Serial
